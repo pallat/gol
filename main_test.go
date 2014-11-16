@@ -77,3 +77,59 @@ func TestTotal3Around(t *testing.T) {
 		t.Errorf("Expected 3 around but was %i", total)
 	}
 }
+
+func TestTotalAliveNeighbours(t *testing.T) {
+	spaces := spaces(3,3)
+	spaces.born(0,0)
+	spaces.born(0,1)
+	spaces.born(0,2)
+
+	neighbours := spaces.neighbours(0,1)
+	if neighbours != 2 {
+		t.Errorf("Expected 2 neighbours but was %v", neighbours)
+	}
+
+}
+
+func TestWorkThroughTableToGetNeighbours(t *testing.T) {
+	spaces := spaces(3,4)
+	tab := [][]bool(spaces)
+
+	defer func() {
+		for y := range tab {
+			for x := range tab[y] {
+				defer func() {
+					spaces.neighbours(x,y)
+			        if r := recover(); r != nil {
+			            t.Errorf("Recovered in f %v", r)
+			            return
+			        }
+				}()
+
+			}
+		}
+        if r := recover(); r != nil {
+		    t.Errorf("Recovered in f %v", r)
+		    return
+		}
+	}()
+
+}
+
+func xTestTurn(t *testing.T) {
+	expected := spaces(3,3)
+	spaces := spaces(3,3)
+	spaces.born(0,0)
+	spaces.born(0,1)
+	spaces.born(0,2)
+
+	expected.born(0,1)
+	expected.born(1,1)
+
+	spaces.turn()
+
+	t.Errorf("Expected\n%v\nbut was\n%v",expected,spaces)
+	// if spaces != expected {
+	// 	t.Errorf("Expected %v but was %v",expected,spaces)
+	// }
+}
