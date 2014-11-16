@@ -48,7 +48,7 @@ func (l *life)rule(neighbours int) {
 type table [][]bool
 
 func (t *table) born(x, y int) {
-	[][]bool(*t)[y][x] = true
+	[][]bool(*t)[y][x] = LIVE
 }
 
 func(t *table) around(x, y int) int {
@@ -61,7 +61,7 @@ func(t *table) around(x, y int) int {
 
 	for xx:=xmin;xx<=x+1;xx++ {
 		for yy:=ymin;yy<=y+1;yy++ {
-			if 	[][]bool(*t)[yy][xx] != true {
+			if 	[][]bool(*t)[yy][xx] != LIVE {
 				count +=1
 			}
 
@@ -92,17 +92,17 @@ func(t *table) neighbours(x, y int) int {
 
 	for yy:=ymin; yy<=ymax; yy++ {
 		for xx:=xmin; xx<=xmax; xx++ {
-			if 	[][]bool(*t)[yy][xx] == true {
-				// fmt.Printf("x %v, y %v, value %v\n",xx,yy,[][]bool(*t)[yy][xx])
-				count +=1
+			if !(xx == x && yy == y){
+				if 	[][]bool(*t)[yy][xx] == LIVE {
+					count +=1
+				}
 			}
-
 		}
 	}
 
-	if count > 0 {
-		count -= 1
-	}
+	// if count > 0 {
+	// 	count -= 1
+	// }
 	return count
 }
 
@@ -134,7 +134,7 @@ func spaces(weight, height int) table {
 }
 
 func main() {
-	begin := 40
+	begin := 30
 	spaces := spaces(begin,begin)
 	rand.Seed(time.Now().UnixNano())
 	total := rand.Intn(begin * 10)
@@ -156,7 +156,7 @@ func main() {
 				if [][]bool(spaces)[y][x] {
 					fmt.Printf("O")
 				}else {
-					fmt.Printf("_")
+					fmt.Printf(" ")
 				}
 			}
 			fmt.Printf("\n")

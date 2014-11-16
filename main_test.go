@@ -92,6 +92,20 @@ func TestTotalAliveNeighbours(t *testing.T) {
 
 }
 
+func TestTotalAliveNeighbours5(t *testing.T) {
+	spaces := spaces(5,5)
+	spaces.born(1,0)
+	spaces.born(1,1)
+	spaces.born(2,1)
+	spaces.born(2,2)
+
+	neighbours := spaces.neighbours(1,2)
+	if neighbours != 3 {
+		t.Errorf("Expected 3 neighbours but was %v", neighbours)
+	}
+
+}
+
 func TestWalkThroughTableToGetNeighbours(t *testing.T) {
 	spaces := spaces(3,4)
 	tab := [][]bool(spaces)
@@ -125,6 +139,7 @@ func TestTurn(t *testing.T) {
 	spaces.born(0,2)
 
 	expected.born(0,1)
+	expected.born(1,1)
 
 	spaces.turn()
 
