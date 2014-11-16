@@ -72,31 +72,31 @@ func (t *table) aboveOf(y int) int {
 }
 
 func (t *table) rightOf(x int) int {
-	xmax := x+1
-	if xmax >= t.weight() {
-		xmax = t.weight()-1
+	right := x+1
+	if right >= t.weight() {
+		right = t.weight()-1
 	}
-	return xmax
+	return right
 }
 
 func (t *table) underOf(y int) int {
-	ymax := y+1
-	if ymax >= t.height() {
-		ymax = t.height()-1
+	under := y+1
+	if under >= t.height() {
+		under = t.height()-1
 	}
-	return ymax
+	return under
 }
 
 func(t *table) neighbours(x, y int) int {
-	xmin := t.leftOf(x)
-	ymin := t.aboveOf(y)
-	xmax := t.rightOf(x)
-	ymax := t.underOf(y)
+	left := t.leftOf(x)
+	above := t.aboveOf(y)
+	right := t.rightOf(x)
+	under := t.underOf(y)
 
 	count :=0
 
-	for yy:=ymin; yy<=ymax; yy++ {
-		for xx:=xmin; xx<=xmax; xx++ {
+	for yy:=above; yy<=under; yy++ {
+		for xx:=left; xx<=right; xx++ {
 			if !(xx == x && yy == y){
 				if 	[][]bool(*t)[yy][xx] == LIVE {
 					count +=1
@@ -109,21 +109,21 @@ func(t *table) neighbours(x, y int) int {
 }
 
 func (t *table) turn() {
-	tab := [][]bool(*t)
-	newTable := spaces(len(tab),len(tab[0]))
-	for y := range tab {
-		for x := range tab[y] {
+	now := [][]bool(*t)
+	tobe := spaces(t.weight(),t.height())
+	for y := range now {
+		for x := range now[y] {
 			neighbours := t.neighbours(x,y)
 
 			cell := life{
-				alive: tab[y][x],
+				alive: now[y][x],
 			}
 			cell.rule(neighbours)
-			[][]bool(newTable)[y][x] = cell.alive
+			[][]bool(tobe)[y][x] = cell.alive
 		}
 	}
 
-	*t = newTable
+	*t = tobe
 }
 
 func spaces(weight, height int) table {
