@@ -51,44 +51,49 @@ func (t *table) born(x, y int) {
 	[][]bool(*t)[y][x] = LIVE
 }
 
-func(t *table) around(x, y int) int {
-	xmin := 0
-	ymin := 0
+func (t *table) weight() int {
+	return len([][]bool(*t)[0])
+}
 
-	count :=0
-	if x > 0 {xmin = x-1}
-	if y > 0 {ymin = y-1}
+func (t *table) height() int {
+	return len([][]bool(*t))	
+}
 
-	for xx:=xmin;xx<=x+1;xx++ {
-		for yy:=ymin;yy<=y+1;yy++ {
-			if 	[][]bool(*t)[yy][xx] != LIVE {
-				count +=1
-			}
+func (t *table) leftOf(x int) int {
+	left := 0
+	if x > 0 {left = x-1}
+	return left
+}
 
-		}
+func (t *table) aboveOf(y int) int {
+	above := 0
+	if y > 0 {above = y-1}
+	return above
+}
+
+func (t *table) rightOf(x int) int {
+	xmax := x+1
+	if xmax >= t.weight() {
+		xmax = t.weight()-1
 	}
+	return xmax
+}
 
-	return count
+func (t *table) underOf(y int) int {
+	ymax := y+1
+	if ymax >= t.height() {
+		ymax = t.height()-1
+	}
+	return ymax
 }
 
 func(t *table) neighbours(x, y int) int {
-	xmin := 0
-	ymin := 0
-	xmax := x+1
-	ymax := y+1
-
+	xmin := t.leftOf(x)
+	ymin := t.aboveOf(y)
+	xmax := t.rightOf(x)
+	ymax := t.underOf(y)
 
 	count :=0
-	if x > 0 {xmin = x-1}
-	if y > 0 {ymin = y-1}
-
-	tab := [][]bool(*t)
-	if xmax >= len(tab[0]) {
-		xmax = len(tab[0])-1
-	}
-	if ymax >= len(tab) {
-		ymax = len(tab)-1
-	}
 
 	for yy:=ymin; yy<=ymax; yy++ {
 		for xx:=xmin; xx<=xmax; xx++ {
@@ -100,9 +105,6 @@ func(t *table) neighbours(x, y int) int {
 		}
 	}
 
-	// if count > 0 {
-	// 	count -= 1
-	// }
 	return count
 }
 
