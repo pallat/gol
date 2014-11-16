@@ -10,7 +10,11 @@ type life struct {
 }
 
 func (l *life)rule1(neighbours int) {
-	l.alive = DEAD
+	if neighbours < 2 {
+		l.alive = DEAD
+	}else {
+		l.alive = LIVE
+	}
 }
 
 func main() {
