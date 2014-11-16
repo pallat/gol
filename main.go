@@ -18,19 +18,31 @@ type life struct {
 }
 
 func (l *life)rule(neighbours int) {
-	if l.alive == DEAD {
-		if neighbours == 3 {
-			l.alive = LIVE
-		}
+// 	LIVE 1 DEAD
+// >	LIVE 2 LIVE
+// >	LIVE 3 LIVE
+// 	LIVE 4 DEAD
+// 	LIVE 5 DEAD
+// 	LIVE 6 DEAD
+// 	LIVE 7 DEAD
+// 	LIVE 8 DEAD
+// 	DEAD 1 DEAD
+// 	DEAD 2 DEAD
+// >	DEAD 3 LIVE
+// 	DEAD 4 DEAD
+// 	DEAD 5 DEAD
+// 	DEAD 6 DEAD
+// 	DEAD 7 DEAD
+// 	DEAD 8 DEAD
+
+	if neighbours == 3 {
+		l.alive = LIVE
+	}else if neighbours == 2 && l.alive == LIVE{
+		l.alive = LIVE
 	}else {
-		if neighbours == 3{
-			l.alive = LIVE
-		}else {
-			if neighbours != 2 {
-				l.alive = DEAD
-			}
-		}
+		l.alive = DEAD
 	}
+
 }
 
 type table [][]bool
@@ -122,12 +134,13 @@ func spaces(weight, height int) table {
 }
 
 func main() {
-	spaces := spaces(30,30)
+	begin := 40
+	spaces := spaces(begin,begin)
 	rand.Seed(time.Now().UnixNano())
-	total := rand.Intn(200)
+	total := rand.Intn(begin * 10)
 
 	for i:=0; i<total; i++ {
-		spaces.born(rand.Intn(30),rand.Intn(30))		
+		spaces.born(rand.Intn(begin),rand.Intn(begin))		
 	}
 
 	tab := [][]bool(spaces)
