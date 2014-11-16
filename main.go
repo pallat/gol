@@ -1,7 +1,11 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
+	"math/rand"
+	"os"
+	"os/exec"
+	"time"
 )
 
 const (
@@ -118,6 +122,36 @@ func spaces(weight, height int) table {
 }
 
 func main() {
-	
+	spaces := spaces(30,30)
+	rand.Seed(time.Now().UnixNano())
+	total := rand.Intn(200)
+
+	for i:=0; i<total; i++ {
+		spaces.born(rand.Intn(30),rand.Intn(30))		
+	}
+
+	tab := [][]bool(spaces)
+
+	for {
+
+    cmd := exec.Command("cmd", "/c", "cls")
+    cmd.Stdout = os.Stdout
+    cmd.Run()
+
+		for y := range tab {
+			for x := range tab[y] {
+				if [][]bool(spaces)[y][x] {
+					fmt.Printf("O")
+				}else {
+					fmt.Printf("_")
+				}
+			}
+			fmt.Printf("\n")
+		}
+
+		spaces.turn()
+
+		time.Sleep(1000 * time.Millisecond)
+	}
 }
 
