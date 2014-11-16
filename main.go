@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 )
 
 const (
@@ -19,10 +19,12 @@ func (l *life)rule(neighbours int) {
 			l.alive = LIVE
 		}
 	}else {
-		if neighbours == 2 || neighbours == 3{
+		if neighbours == 3{
 			l.alive = LIVE
 		}else {
-			l.alive = DEAD
+			if neighbours != 2 {
+				l.alive = DEAD
+			}
 		}
 	}
 }
@@ -82,23 +84,28 @@ func(t *table) neighbours(x, y int) int {
 		}
 	}
 
-	return count -1
+	if count > 0 {
+		count -= 1
+	}
+	return count
 }
 
 func (t *table) turn() {
 	tab := [][]bool(*t)
-	for x := range tab {
-		for y := range tab[x] {
-			// neighbours := t.neighbours(x,y)
-			// fmt.Printf("%v\n",neighbours)
-			fmt.Println("%i,%i\n",x,y)
-			// cell := life{
-			// 	alive: tab[x][y],
-			// }
-			// cell.rule(neighbours)
-			// [][]bool(*t)[x][y] = cell.alive
+	newTable := spaces(len(tab),len(tab[0]))
+	for y := range tab {
+		for x := range tab[y] {
+			neighbours := t.neighbours(x,y)
+
+			cell := life{
+				alive: tab[y][x],
+			}
+			cell.rule(neighbours)
+			[][]bool(newTable)[y][x] = cell.alive
 		}
 	}
+
+	*t = newTable
 }
 
 func spaces(weight, height int) table {

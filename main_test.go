@@ -1,6 +1,7 @@
 package main
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -91,7 +92,7 @@ func TestTotalAliveNeighbours(t *testing.T) {
 
 }
 
-func TestWorkThroughTableToGetNeighbours(t *testing.T) {
+func TestWalkThroughTableToGetNeighbours(t *testing.T) {
 	spaces := spaces(3,4)
 	tab := [][]bool(spaces)
 
@@ -116,7 +117,7 @@ func TestWorkThroughTableToGetNeighbours(t *testing.T) {
 
 }
 
-func xTestTurn(t *testing.T) {
+func TestTurn(t *testing.T) {
 	expected := spaces(3,3)
 	spaces := spaces(3,3)
 	spaces.born(0,0)
@@ -124,12 +125,10 @@ func xTestTurn(t *testing.T) {
 	spaces.born(0,2)
 
 	expected.born(0,1)
-	expected.born(1,1)
 
 	spaces.turn()
 
-	t.Errorf("Expected\n%v\nbut was\n%v",expected,spaces)
-	// if spaces != expected {
-	// 	t.Errorf("Expected %v but was %v",expected,spaces)
-	// }
+	if !reflect.DeepEqual(spaces,expected) {
+		t.Errorf("Expected %v but was %v",expected,spaces)
+	}
 }
