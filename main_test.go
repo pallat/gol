@@ -39,3 +39,21 @@ func TestRule3AliveCellShouldBeDiedWhenMoreThanThreeNeighboursHasAlive(t *testin
 		t.Errorf("Expected cell died but it alive.")	
 	}
 }
+
+func TestRule4DeadCellShouldBeBornWhenThreeNeighboursHasAlive(t *testing.T) {
+	var cell life
+	cell.alive = DEAD
+	cell.rule(3)
+	if cell.alive == DEAD {
+		t.Errorf("Expected cell alive but it died.")	
+	}
+}
+
+func TestRule4DeadCellShouldBeStillDeadWhenTwoNeighboursHasAlive(t *testing.T) {
+	var cell life
+	cell.alive = DEAD
+	cell.rule(2)
+	if cell.alive == LIVE {
+		t.Errorf("Expected cell died but it alive.")	
+	}
+}
