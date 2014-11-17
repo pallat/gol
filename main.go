@@ -51,7 +51,7 @@ func (t *table) born(x, y int) {
 	[][]bool(*t)[y][x] = LIVE
 }
 
-func (t *table) weight() int {
+func (t *table) width() int {
 	return len([][]bool(*t)[0])
 }
 
@@ -73,8 +73,8 @@ func (t *table) aboveOf(y int) int {
 
 func (t *table) rightOf(x int) int {
 	right := x+1
-	if right >= t.weight() {
-		right = t.weight()-1
+	if right >= t.width() {
+		right = t.width()-1
 	}
 	return right
 }
@@ -110,7 +110,7 @@ func(t *table) neighbours(x, y int) int {
 
 func (t *table) turn() {
 	now := [][]bool(*t)
-	tobe := spaces(t.weight(),t.height())
+	tobe := spaces(t.width(),t.height())
 	for y := range now {
 		for x := range now[y] {
 			neighbours := t.neighbours(x,y)
@@ -126,17 +126,17 @@ func (t *table) turn() {
 	*t = tobe
 }
 
-func spaces(weight, height int) table {
+func spaces(width, height int) table {
 	var t table
 	for i:=0;i<height;i++ {
-		t = append(t,make([]bool,weight))
+		t = append(t,make([]bool,width))
 	}
 
 	return t
 }
 
 func main() {
-	begin := 30
+	begin := 60
 	spaces := spaces(begin,begin)
 	rand.Seed(time.Now().UnixNano())
 	total := rand.Intn(begin * 10)
@@ -149,7 +149,7 @@ func main() {
 
 	for {
 
-    cmd := exec.Command("cmd", "/c", "cls")
+    cmd := exec.Command("clear")
     cmd.Stdout = os.Stdout
     cmd.Run()
 
@@ -166,7 +166,7 @@ func main() {
 
 		spaces.turn()
 
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 	}
 }
 
