@@ -1,3 +1,3 @@
 gol
 ===
-## Conway's Game of Life written in go
+## Conway's Game of Life written in go(golang)
